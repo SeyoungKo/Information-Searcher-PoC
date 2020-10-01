@@ -1,7 +1,9 @@
+import json
+
 from flask_restx import Resource, Namespace
-from flask import jsonify
+from flask import jsonify, flash
+from sqlalchemy.exc import SQLAlchemyError
 from ..models.patient import Patient as model_patient
-import app.main.models.patient as patient
 from ..util.dto import PatientDto
 
 patient = PatientDto.api
@@ -14,3 +16,21 @@ class Patient(Resource):
         # result = patient.patients_schema.dump(all_patients)
         return jsonify(all_patients)
 
+@patient.route('/page/<int:page>', methods=['GET'])
+class Patient(Resource):
+    def get(self, page):
+        """pagination route patient information"""
+        try:
+            patients_list =  model_patient.query.order_by(
+                model_patient.id.asc()
+            ).paginate(page, per_page=5)
+
+            list_item =[]
+            for row in patients_list.items:
+                list_item.append(row.serialize())
+
+        except SQLAlchemyError:
+            flash("No data in database")
+            patients_list = None
+
+        return jsonify({'limit': page, 'search_result': list_item})

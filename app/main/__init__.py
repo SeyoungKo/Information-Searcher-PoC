@@ -11,7 +11,6 @@ def create_app():
     config = configparser.ConfigParser()
     config.read('config.ini')
     app.config['SQLALCHEMY_DATABASE_URI'] = config['DEFAULT']['SQLALCHEMY_DATABASE_URI']
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://seyoung:seyoung@localhost:5432/miniintern'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     global db

@@ -19,26 +19,17 @@ class Patient(app.main.db.Model):
     gender = Column(app.main.db.String(50), unique=False)
     birthday = Column(app.main.db.DateTime)
 
-    # =================================
-    def serialize(self):
-        return {
-            'first_name' : self.first_name,
-            'last_name' : self.last_name,
-            'email' : self.email,
-            'gender' : self.gender
-        }
-    #====================================
-    def __repr__(self):
-        return '<Patient {}>'.format(self.first_name)
+    # def __repr__(self):
+    #     return '<Patient {}>'.format(self.first_name)
 
-    def rtn_dict(self):
-        return {
-            'first_name' : self.first_name,
-            'last_name' : self.last_name,
-            'email' : self.email,
-            'gender' : self.gender,
-            'birthday' : self.birthday
-        }
+    # def rtn_dict(self):
+    #     return {
+    #         'first_name' : self.first_name,
+    #         'last_name' : self.last_name,
+    #         'email' : self.email,
+    #         'gender' : self.gender,
+    #         'birthday' : self.birthday
+    #     }
 
 class PatientSchema(app.main.ma.Schema):
     fields = ('first_name', 'last_name', 'email', 'gender', 'birthday')

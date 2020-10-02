@@ -7,13 +7,10 @@ db = SQLAlchemy()
 ma = Marshmallow()
 
 def create_app():
+
     app = Flask(__name__)
     config = configparser.ConfigParser()
     config.read('config.ini')
-    app.config['SQLALCHEMY_DATABASE_URI'] = config['DEFAULT']['SQLALCHEMY_DATABASE_URI']
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.secret_key = 'super secret key'
-    app.config['SESSION_TYPE'] = 'filesystem'
 
     global db
     global ma
@@ -21,5 +18,10 @@ def create_app():
     db = SQLAlchemy(app)
     ma = Marshmallow(app)
     db.create_all()
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = config['DEFAULT']['SQLALCHEMY_DATABASE_URI']
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
 
     return app

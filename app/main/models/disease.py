@@ -19,5 +19,21 @@ class Disease(app.main.db.Model):
     patient_id = Column(app.main.db.Integer, unique=True)
     visit_id = Column(app.main.db.Integer, unique=True)
 
-    def __repr__(self):
-        return '<disease {}>'.format(self.disease_name)
+    def serialize(self):
+        return dict(
+            id=self.id,
+            disease_code=self.disease_code,
+            disease_name=self.disease_name,
+            diagnosis_datetime=self.diagnosis_datetime,
+            patient_id=self.patient_id,
+            visit_id=self.visit_id
+        )
+
+
+class DiseaseSchema(app.main.ma.Schema):
+    fields = ('disease_code', 'disease_name', 'diagnosis_datetime', 'patient_id', 'visit_id')
+
+
+disease_schema = DiseaseSchema()
+diseases_schema = DiseaseSchema(many=True)
+

@@ -24,17 +24,17 @@ class Lab(app.main.db.Model):
     patient_id = Column(app.main.db.Integer, unique=True)
     visit_id = Column(app.main.db.Integer, unique=True)
 
-    # def __repr__(self):
-    #     return '<Patient {}>'.format(self.first_name)
-
-    # def rtn_dict(self):
-    #     return {
-    #         'first_name' : self.first_name,
-    #         'last_name' : self.last_name,
-    #         'email' : self.email,
-    #         'gender' : self.gender,
-    #         'birthday' : self.birthday
-    #     }
+    def serialize(self):
+        return dict(
+            id = self.id,
+            lab_item_code = self.lab_item_code,
+            lab_item_name = self.lab_item_name,
+            charttime = self.charttime,
+            value = self.value,
+            unit = self.unit,
+            patient_id = self.patient_id,
+            visit_id = self.visit_id
+        )
 
 class LabSchema(app.main.ma.Schema):
     fields = ('lab_item_code', 'lab_item_name', 'charttime', 'value', 'unit', 'patient_id', 'visit_id')

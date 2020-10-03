@@ -10,14 +10,15 @@ import app.main
 patient = PatientDto.api
 
 @patient.route('/', methods=['GET'])
-class Patient(Resource):
+class PatientAll(Resource):
     def get(self):
         """Query all patient information"""
         all_patients = model_patient.query.all()
         return jsonify(all_patients)
 
 @patient.route('/attr/', methods=['GET'])
-class Patient(Resource):
+class PatientAttr(Resource):
+
     def get(self):
         """Using Dynamic queries with patient information"""
         query_string = request.args.getlist('attributes')
@@ -35,7 +36,7 @@ class Patient(Resource):
         return jsonify({'search_result': [dict(row) for row in results]})
 
 @patient.route('/page/<int:offset>/<int:limit>', methods=['GET'])
-class Patient(Resource):
+class PatientPaginate(Resource):
     def get(self, offset, limit):
         """pagination route patient information"""
         try:

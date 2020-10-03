@@ -19,9 +19,6 @@ class Patient(app.main.db.Model):
     gender = Column(app.main.db.String(50), unique=False)
     birthday = Column(app.main.db.DateTime)
 
-    # def __repr__(self):
-    #     return '<Patient {}>'.format(self.first_name)
-
     def serialize(self):
         return dict(
             id = self.id,

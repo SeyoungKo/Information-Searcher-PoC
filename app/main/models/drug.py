@@ -25,3 +25,22 @@ class Drug(app.main.db.Model):
     patient_id = Column(app.main.db.Integer, unique=True)
     visit_id = Column(app.main.db.Integer, unique=True)
 
+    def serialize(self):
+        return dict(
+            id = self.id,
+            drug_name = self.drug_name,
+            ingredient = self.ingredient,
+            order_datetime = self.order_datetime,
+            drug_company = self.drug_company,
+            dose = self.dose,
+            unit = self.unit,
+            patient_id = self.patient_id,
+            visit_id = self.visit_id
+        )
+
+class DrugSchema(app.main.ma.Schema):
+    fields = ('drug_name', 'ingredient', 'order_datetime', 'drug_company', 'dose', 'unit', 'patient_id', 'visit_id')
+
+drug_schema = DrugSchema()
+drugs_schema = DrugSchema(many=True)
+

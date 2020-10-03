@@ -33,7 +33,7 @@ class Disease(Resource):
         except SQLAlchemyError:
             flash("No data in database")
 
-        return jsonify({'search_result': [dict(row) for row in results]})
+        return jsonify({'attributes': [attr for attr in query_string], 'search_result': [dict(row) for row in results]})
 
 @disease.route('/page/<int:offset>/<int:limit>', methods=['GET'])
 class Disease(Resource):

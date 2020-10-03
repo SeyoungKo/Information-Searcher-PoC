@@ -33,7 +33,7 @@ class PatientAttr(Resource):
         except SQLAlchemyError:
             flash("No data in database")
 
-        return jsonify({'search_result': [dict(row) for row in results]})
+        return jsonify({'attributes': [attr for attr in query_string],'search_result': [dict(row) for row in results]})
 
 @patient.route('/page/<int:offset>/<int:limit>', methods=['GET'])
 class PatientPaginate(Resource):
@@ -53,3 +53,5 @@ class PatientPaginate(Resource):
             patients_list = None
 
         return jsonify({'offset': offset, 'limit':limit, 'search_result': list_item})
+
+

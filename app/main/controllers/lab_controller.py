@@ -32,7 +32,7 @@ class Lab(Resource):
         except SQLAlchemyError:
             flash("No data in database")
 
-        return jsonify({'search_result': [dict(row) for row in results]})
+        return jsonify({'attributes': [attr for attr in query_string], 'search_result': [dict(row) for row in results]})
 
 @lab.route('/page/<int:offset>/<int:limit>', methods=['GET'])
 class Lab(Resource):

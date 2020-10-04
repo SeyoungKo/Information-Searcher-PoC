@@ -1,4 +1,4 @@
-# 데이터 검색 API
+# 데이터베이스 정보 검색기 API 서버
 linewalks data searcher miniintern project 
 
 ### 1. 프로젝트 소개 & 환경

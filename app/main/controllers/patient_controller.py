@@ -9,12 +9,14 @@ import app.main
 
 patient = PatientDto.api
 
+
 @patient.route('/', methods=['GET'])
 class PatientAll(Resource):
     def get(self):
         """Query all patient information"""
         all_patients = model_patient.query.all()
         return jsonify(all_patients)
+
 
 @patient.route('/attr/', methods=['GET'])
 class PatientAttr(Resource):
@@ -35,10 +37,11 @@ class PatientAttr(Resource):
 
         return jsonify({'attributes': [attr for attr in query_string],'search_result': [dict(row) for row in results]})
 
+
 @patient.route('/page/<int:offset>/<int:limit>', methods=['GET'])
 class PatientPaginate(Resource):
     def get(self, offset, limit):
-        """pagination route patient information"""
+        """Patient information about the pagination route"""
         try:
             patients_list =  model_patient.query.order_by(
                 model_patient.id.asc()
@@ -52,6 +55,20 @@ class PatientPaginate(Resource):
             flash("No data in database")
             patients_list = None
 
-        return jsonify({'offset': offset, 'limit':limit, 'search_result': list_item})
+        return jsonify({'offset': offset, 'limit': limit, 'search_result': list_item})
+
+
+@patient.route('/<text>', methods=['GET'])
+class PatientFreetext(Resource):
+    def get(self, text):
+        """Patient information for specific search condition"""
+        attr = text
+        search_keyword = request.get_json(force=True)[str(attr)]
+
+        model_attr = getattr(model_patient, attr)
+        results = model_patient.query.filter(model_attr == search_keyword).all()
+
+        return jsonify({'attributes': attr, 'query': search_keyword, 'results': results})
+
 
 

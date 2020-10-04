@@ -10,7 +10,7 @@ import app.main
 disease = DiseaseDto.api
 
 @disease.route('/', methods=['GET'])
-class Disease(Resource):
+class DiseaseAll(Resource):
     def get(self):
         """Query all diseases information"""
         all_diseases = model_disease.query.all()
@@ -18,7 +18,7 @@ class Disease(Resource):
         return jsonify(all_diseases)
 
 @disease.route('/attr/', methods=['GET'])
-class Disease(Resource):
+class DiseaseAttr(Resource):
     def get(self):
         """Using Dynamic queries with disease information"""
         query_string = request.args.getlist('attributes')
@@ -36,9 +36,9 @@ class Disease(Resource):
         return jsonify({'attributes': [attr for attr in query_string], 'search_result': [dict(row) for row in results]})
 
 @disease.route('/page/<int:offset>/<int:limit>', methods=['GET'])
-class Disease(Resource):
+class DiseasePagination(Resource):
     def get(self, offset, limit):
-        """pagination route disease information"""
+        """Disease information about the pagination route"""
         try:
             diseases_list =  model_disease.query.order_by(
                 model_disease.id.asc()
@@ -52,4 +52,16 @@ class Disease(Resource):
             flash("No data in database")
             diseases_list = None
 
-        return jsonify({'offset': offset, 'limit':limit, 'search_result': list_item})
+        return jsonify({'offset': offset, 'limit': limit, 'search_result': list_item})
+
+@disease.route('/<text>', methods=['GET'])
+class DiseaseFreetext(Resource):
+    def get(self, text):
+        """Disease information for specific search condition"""
+        attr = text
+        search_keyword = request.get_json(force=True)[str(attr)]
+
+        model_attr = getattr(model_disease, attr)
+        results = model_disease.query.filter(model_attr == search_keyword).all()
+
+        return jsonify({'attributes': attr, 'query': search_keyword, 'results': results})

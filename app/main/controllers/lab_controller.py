@@ -10,14 +10,14 @@ import app.main
 lab = LabDto.api
 
 @lab.route('/', methods=['GET'])
-class Lab(Resource):
+class LabAll(Resource):
     def get(self):
         """Query all lab information"""
         all_labs = model_lab.query.all()
         return jsonify(all_labs)
 
 @lab.route('/attr/', methods=['GET'])
-class Lab(Resource):
+class LabAttr(Resource):
     def get(self):
         """Using Dynamic queries with lab information"""
         query_string = request.args.getlist('attributes')
@@ -35,9 +35,9 @@ class Lab(Resource):
         return jsonify({'attributes': [attr for attr in query_string], 'search_result': [dict(row) for row in results]})
 
 @lab.route('/page/<int:offset>/<int:limit>', methods=['GET'])
-class Lab(Resource):
+class LabPaginate(Resource):
     def get(self, offset, limit):
-        """pagination route lab information"""
+        """Lab information about the pagination route"""
         try:
             labs_list =  model_lab.query.order_by(
                 model_lab.id.asc()
@@ -51,4 +51,17 @@ class Lab(Resource):
             flash("No data in database")
             labs_list = None
 
-        return jsonify({'offset': offset, 'limit':limit, 'search_result': list_item})
+        return jsonify({'offset': offset, 'limit': limit, 'search_result': list_item})
+
+@lab.route('/<text>', methods=['GET'])
+class LabFreetext(Resource):
+    def get(self, text):
+        """Lab information for specific search condition"""
+        attr = text
+        search_keyword = request.get_json(force=True)[str(attr)]
+
+        model_attr = getattr(model_lab, attr)
+        results = model_lab.query.filter(model_attr == search_keyword).all()
+
+        return jsonify({'attributes': attr, 'query': search_keyword, 'results': results})
+

@@ -12,15 +12,14 @@ import app.main
 visit = VisitDto.api
 
 @visit.route('/', methods=['GET'])
-class Visit(Resource):
+class VisitAll(Resource):
     def get(self):
         """Query all visit information"""
         all_visits = model_visit.query.all()
-        # result = patient.patients_schema.dump(all_patients)
         return jsonify(all_visits)
 
 @visit.route('/attr/', methods=['GET'])
-class Visit(Resource):
+class VisitAttr(Resource):
     def get(self):
         """Using Dynamic queries with visit information"""
         query_string = request.args.getlist('attributes')
@@ -38,9 +37,9 @@ class Visit(Resource):
         return jsonify({'attributes': [attr for attr in query_string], 'search_result': [dict(row) for row in results]})
 
 @visit.route('/page/<int:offset>/<int:limit>', methods=['GET'])
-class Visit(Resource):
+class VisitPaginate(Resource):
     def get(self, offset, limit):
-        """pagination route visit information"""
+        """Visit information about the pagination route"""
         try:
             vists_list =  model_visit.query.order_by(
                 model_visit.id.asc()
@@ -54,4 +53,18 @@ class Visit(Resource):
             flash("No data in database")
             vists_list = None
 
-        return jsonify({'offset': offset, 'limit':limit, 'search_result': list_item})
+        return jsonify({'offset': offset, 'limit': limit, 'search_result': list_item})
+
+@visit.route('/<text>', methods=['GET'])
+class VisitFreetext(Resource):
+    def get(self, text):
+        """Visit information for specific search condition"""
+        attr = text
+        search_keyword = request.get_json(force=True)[str(attr)]
+
+        model_attr = getattr(model_visit, attr)
+        results = model_visit.query.filter(model_attr == search_keyword).all()
+
+        return jsonify({'attributes': attr, 'query': search_keyword, 'results': results})
+
+

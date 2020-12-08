@@ -73,6 +73,6 @@ request  | description
 
 ![스크린샷 2020-10-04 오후 4 42 36](https://user-images.githubusercontent.com/39934875/95009946-a8969500-0660-11eb-9523-7f7e6255c8b1.png)
 
-![스크린샷 2020-10-04 오후 4 40 04](https://user-images.githubusercontent.com/39934875/95009961-c106af80-0660-11eb-9ad7-9d711f9bd516.png)
+![스크린샷 2020-10-04 오후 4 41 17](https://user-images.githubusercontent.com/39934875/95009971-d54aac80-0660-11eb-801c-e34de97573f9.png)
 
 ![스크린샷 2020-10-04 오후 4 41 24](https://user-images.githubusercontent.com/39934875/95009974-daa7f700-0660-11eb-8104-27a65c2d52e7.png)
